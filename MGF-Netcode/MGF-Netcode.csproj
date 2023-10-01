@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>MGF_Netcode</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <Configurations>Debug;Release</Configurations>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MultiplayerGameFramework\MultiplayerGameFramework.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="BCCrypto">
+      <HintPath>..\..\..\Netcode.IO.NET\Netcode.IO.NET\bin\Debug\BCCrypto.dll</HintPath>
+    </Reference>
+    <Reference Include="Netcode.IO.NET">
+      <HintPath>..\..\..\Netcode.IO.NET\Netcode.IO.NET\bin\Debug\Netcode.IO.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="ReliableNetcode">
+      <HintPath>..\..\..\ReliableNetcode.NET\ReliableNetcode\bin\Debug\ReliableNetcode.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
