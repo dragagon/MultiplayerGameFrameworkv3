@@ -11,7 +11,7 @@ namespace MGF_Lidgren
         private readonly ILogger logger;
         private readonly IOptions<LidgrenConfig> config;
         private static NetServer server;
-        private CancellationTokenSource _ts;
+        private CancellationToken _token;
 
         public LidgrenServer(ILogger<LidgrenServer> logger, IOptions<LidgrenConfig> config)
         {
@@ -28,7 +28,7 @@ namespace MGF_Lidgren
         {
             logger.LogInformation("Starting daemon: " + config.Value.ApplicationName);
             Setup();
-            _ts = new CancellationTokenSource();
+            _token = cancellationToken;
             return Task.Factory.StartNew(() =>
             {
                 Console.WriteLine("Starting Service");
@@ -36,20 +36,19 @@ namespace MGF_Lidgren
                 {
                     Thread.Sleep(500);
                     MessageHandler();
-                    if (_ts.Token.IsCancellationRequested)
+                    if (_token.IsCancellationRequested)
                     {
                         Console.WriteLine("Stopping service");
                         break;
                     }
                 }
-            }, _ts.Token);
+            }, _token);
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
             logger.LogInformation("Stopping daemon.");
             TearDown();
-            _ts.Cancel();
             return Task.CompletedTask;
         }
 
