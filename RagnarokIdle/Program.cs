@@ -5,6 +5,10 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 using MGF_Lidgren;
+using Autofac.Extensions.DependencyInjection;
+using Autofac;
+using MultiplayerGameFramework;
+using Autofac.Configuration;
 
 var builder = new HostBuilder()
      .ConfigureAppConfiguration((hostingContext, config) =>
@@ -15,13 +19,16 @@ var builder = new HostBuilder()
          {
              config.AddCommandLine(args);
          }
-     })
-     .ConfigureServices((hostContext, services) =>
-     {
-         services.AddOptions();
-         services.Configure<LidgrenConfig>(hostContext.Configuration.GetSection("Daemon"));
 
-         services.AddHostedService<LidgrenServer>();
+         config.SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile($"{args[0]}.json")
+                .Build();
+     })
+     .UseServiceProviderFactory(new AutofacServiceProviderFactory())
+     .ConfigureContainer<ContainerBuilder>((hostContext, builder) =>
+     {
+         builder.RegisterType<LidgrenServer>().As<IHostedService>();
+         builder.RegisterModule(new ConfigurationModule(hostContext.Configuration));
      })
      .ConfigureLogging((hostingContext, logging) => {
          logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));

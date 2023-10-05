@@ -2,7 +2,7 @@
   "profiles": {
     "RagnarokIdle": {
       "commandName": "Project",
-      "commandLineArgs": "--Daemon:ApplicationName=\"Lidgren Server\""
+      "commandLineArgs": "login"
     }
   }
 }

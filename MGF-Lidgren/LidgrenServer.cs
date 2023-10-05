@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using MultiplayerGameFramework.Config;
 using MultiplayerGameFramework.Interfaces;
 
 namespace MGF_Lidgren
@@ -9,11 +10,10 @@ namespace MGF_Lidgren
     public class LidgrenServer : BackgroundService, IServerApplication, IDisposable
     {
         private readonly ILogger logger;
-        private readonly IOptions<LidgrenConfig> config;
+        private readonly ServerConfiguration config;
         private static NetServer server;
-        private CancellationToken _token;
 
-        public LidgrenServer(ILogger<LidgrenServer> logger, IOptions<LidgrenConfig> config)
+        public LidgrenServer(ILogger<LidgrenServer> logger, ServerConfiguration config)
         {
             this.logger = logger;
             this.config = config;
@@ -26,8 +26,7 @@ namespace MGF_Lidgren
 
         public override async Task StartAsync(CancellationToken cancellationToken)
         {
-            logger.LogInformation("Starting daemon: " + config.Value.ApplicationName);
-            _token = cancellationToken;
+            logger.LogInformation("Starting daemon: " + config.Name);
             Setup();
             await base.StartAsync(cancellationToken);
         }
@@ -51,8 +50,8 @@ namespace MGF_Lidgren
         public void Setup()
         {
             NetPeerConfiguration configuration = new NetPeerConfiguration("RKO");
-            configuration.MaximumConnections = 100;
-            configuration.Port = 8080;
+            configuration.MaximumConnections = config.MaxConnections;
+            configuration.Port = config.Port;
             server = new NetServer(configuration);
             server.Start();
             //server.RegisterReceivedCallback(new SendOrPostCallback(MessageHandler));

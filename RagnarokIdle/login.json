@@ -1,0 +1,14 @@
+{
+  "components": [
+    {
+      "type": "MultiplayerGameFramework.Config.ServerConfiguration, MultiplayerGameFramework",
+      "injectProperties": true,
+      "properties": {
+          "Name": "Ligren Login Server",
+          "Port": 8080,
+          "MaxConnections": 100
+      }
+    }
+  ],
+  "modules":  []
+}
