@@ -19,9 +19,10 @@ namespace MGF_Lidgren
             this.config = config;
         }
 
-        public void Dispose()
+        public override void Dispose()
         {
             logger.LogInformation("Disposing...");
+            base.Dispose();
         }
 
         public override async Task StartAsync(CancellationToken cancellationToken)
