@@ -21,7 +21,7 @@ var builder = new HostBuilder()
          services.AddOptions();
          services.Configure<LidgrenConfig>(hostContext.Configuration.GetSection("Daemon"));
 
-         services.AddSingleton<IHostedService, LidgrenServer>();
+         services.AddHostedService<LidgrenServer>();
      })
      .ConfigureLogging((hostingContext, logging) => {
          logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));

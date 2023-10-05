@@ -6,7 +6,7 @@ using MultiplayerGameFramework.Interfaces;
 
 namespace MGF_Lidgren
 {
-    public class LidgrenServer : IServerApplication, IHostedService, IDisposable
+    public class LidgrenServer : BackgroundService, IServerApplication, IDisposable
     {
         private readonly ILogger logger;
         private readonly IOptions<LidgrenConfig> config;
@@ -24,32 +24,28 @@ namespace MGF_Lidgren
             logger.LogInformation("Disposing...");
         }
 
-        public Task StartAsync(CancellationToken cancellationToken)
+        public override async Task StartAsync(CancellationToken cancellationToken)
         {
             logger.LogInformation("Starting daemon: " + config.Value.ApplicationName);
-            Setup();
             _token = cancellationToken;
-            return Task.Factory.StartNew(() =>
-            {
-                Console.WriteLine("Starting Service");
-                while (true)
-                {
-                    Thread.Sleep(500);
-                    MessageHandler();
-                    if (_token.IsCancellationRequested)
-                    {
-                        Console.WriteLine("Stopping service");
-                        break;
-                    }
-                }
-            }, _token);
+            Setup();
+            await base.StartAsync(cancellationToken);
         }
 
-        public Task StopAsync(CancellationToken cancellationToken)
+        protected override async Task ExecuteAsync(CancellationToken cancellationToken)
         {
-            logger.LogInformation("Stopping daemon.");
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                MessageHandler();
+                await Task.Delay(500, cancellationToken);
+            }
+        }
+
+        public override async Task StopAsync(CancellationToken cancellationToken)
+        {
+            Console.WriteLine("Stopping service");
             TearDown();
-            return Task.CompletedTask;
+            await base.StopAsync(cancellationToken);
         }
 
         public void Setup()
@@ -59,6 +55,7 @@ namespace MGF_Lidgren
             configuration.Port = 8080;
             server = new NetServer(configuration);
             server.Start();
+            //server.RegisterReceivedCallback(new SendOrPostCallback(MessageHandler));
         }
 
         public void TearDown()
@@ -66,7 +63,7 @@ namespace MGF_Lidgren
             server.Shutdown("Server shutting down...");
         }
 
-        public static void MessageHandler()
+        public static void MessageHandler()//object? peer)
         {
 
             NetIncomingMessage im;
