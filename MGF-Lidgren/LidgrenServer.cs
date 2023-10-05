@@ -54,7 +54,6 @@ namespace MGF_Lidgren
             configuration.Port = config.Port;
             server = new NetServer(configuration);
             server.Start();
-            //server.RegisterReceivedCallback(new SendOrPostCallback(MessageHandler));
         }
 
         public void TearDown()
