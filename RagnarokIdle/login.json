@@ -6,7 +6,7 @@
         "Name": "Ligren Login Server",
         "Port": 8080,
         "MaxConnections": 100,
-        "LocalAddress": "localhost"
+        "LocalAddress": "127.0.0.1"
       }
     }
   ],
