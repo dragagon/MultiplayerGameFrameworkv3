@@ -11,7 +11,6 @@ namespace MultiplayerGameFramework.Config
         public string Name { get; set; }
         public int Port { get; set; }
         public int MaxConnections { get; set; }
-
         public string LocalAddress { get; set; }
 
     }

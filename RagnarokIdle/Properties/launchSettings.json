@@ -2,7 +2,7 @@
   "profiles": {
     "RagnarokIdle": {
       "commandName": "Project",
-      "commandLineArgs": "login"
+      "commandLineArgs": "netcode login"
     }
   }
 }

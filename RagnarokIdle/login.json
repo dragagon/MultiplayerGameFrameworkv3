@@ -3,7 +3,7 @@
     {
       "type": "MultiplayerGameFramework.Config.ServerConfiguration, MultiplayerGameFramework",
       "properties": {
-        "Name": "Ligren Login Server",
+        "Name": "Login Server",
         "Port": 8080,
         "MaxConnections": 100,
         "LocalAddress": "127.0.0.1"

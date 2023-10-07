@@ -22,12 +22,12 @@ var builder = new HostBuilder()
 
          config.SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile($"{args[0]}.json")
+                .AddJsonFile($"{args[1]}.json")
                 .Build();
      })
      .UseServiceProviderFactory(new AutofacServiceProviderFactory())
      .ConfigureContainer<ContainerBuilder>((hostContext, builder) =>
      {
-         builder.RegisterType<LidgrenServer>().As<IHostedService>();
          builder.RegisterModule(new ConfigurationModule(hostContext.Configuration));
      })
      .ConfigureLogging((hostingContext, logging) => {

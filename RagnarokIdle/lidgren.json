@@ -1,0 +1,8 @@
+{
+  "components": [],
+  "modules": [
+    {
+      "type": "MGF_Lidgren.LidgrenModule, MGF-Lidgren"
+    }
+  ]
+}
