@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using MultiplayerGameFramework.Config;
 using MultiplayerGameFramework.Interfaces;
 using NetcodeIO.NET;
 using NetcodeIO.NET.Utils;
@@ -10,7 +11,7 @@ namespace MGF_Netcode
     public class NetcodeServer : IServerApplication, IHostedService, IDisposable
     {
         private readonly ILogger logger;
-        private readonly IOptions<NetcodeConfig> config;
+        private readonly ServerConfiguration config;
         private CancellationToken _token;
         private readonly byte[] privateKey = new byte[32]
         {
@@ -22,7 +23,7 @@ namespace MGF_Netcode
         private readonly ulong protocolId = 0xdeadbeefL;
         private Server server;
 
-        public NetcodeServer(ILogger<NetcodeServer> logger, IOptions<NetcodeConfig> config)
+        public NetcodeServer(ILogger<NetcodeServer> logger, ServerConfiguration config)
         {
             this.logger = logger;
             this.config = config;
@@ -37,7 +38,7 @@ namespace MGF_Netcode
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            logger.LogInformation("Starting daemon: " + config.Value.ApplicationName);
+            logger.LogInformation("Starting daemon: " + config.Name);
             Setup();
             return Task.CompletedTask;
         }
@@ -51,7 +52,7 @@ namespace MGF_Netcode
 
         public void Setup()
         {
-            server = new Server(100, "localhost", 8080, protocolId, privateKey);
+            server = new Server(config.MaxConnections, config.LocalAddress, config.Port, protocolId, privateKey);
             server.Start();
             server.OnClientMessageReceived += MessageHandler;
             server.OnLogMessage += OnLogMessage;

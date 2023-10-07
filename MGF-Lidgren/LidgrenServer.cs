@@ -53,6 +53,7 @@ namespace MGF_Lidgren
             NetPeerConfiguration configuration = new NetPeerConfiguration("RKO");
             configuration.MaximumConnections = config.MaxConnections;
             configuration.Port = config.Port;
+            configuration.LocalAddress = System.Net.IPAddress.Parse(config.LocalAddress);
             server = new NetServer(configuration);
             server.Start();
         }
