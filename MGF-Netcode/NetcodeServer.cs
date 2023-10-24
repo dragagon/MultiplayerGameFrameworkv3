@@ -70,7 +70,6 @@ namespace MGF_Netcode
 
         public void MessageHandler(RemoteClient client, byte[] payload, int payloadSize)
         {
-
         }
 
         public static void Output(string text)

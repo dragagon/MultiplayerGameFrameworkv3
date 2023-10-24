@@ -21,6 +21,7 @@ var builder = new HostBuilder()
          }
 
          config.SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile($"common.json")
                 .AddJsonFile($"{args[0]}.json")
                 .AddJsonFile($"{args[1]}.json")
                 .Build();
